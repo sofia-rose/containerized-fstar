@@ -152,7 +152,8 @@ RUN mkdir -p /home/devuser/kremlin /home/devuser/tmp \
     ctypes \
  && eval $(opam env) \
  && make -j6 \
- && make -j6 test
+ && make -j6 test \
+ && rm -rf /home/devuser/tmp
 ENV PATH ${KREMLIN_HOME}:${PATH}
 ################################################################################
 # End Install Kremlin
@@ -175,6 +176,18 @@ RUN eval $(opam env) \
 ################################################################################
 ARG VALE_VERSION
 ENV VALE_HOME /home/devuser/vale
+RUN sudo apt-get install -y mono-devel
+RUN mkdir -p /home/devuser/tmp \
+ && curl -sSLo /home/devuser/tmp/vale.zip \
+    https://github.com/project-everest/vale/releases/download/v${VALE_VERSION}/vale-release-${VALE_VERSION}.zip \
+ && unzip /home/devuser/tmp/vale.zip -d /home/devuser/tmp \
+ && mv /home/devuser/tmp/vale-release-${VALE_VERSION} /home/devuser/vale \
+ && chmod --reference=/home/devuser /home/devuser/vale/bin \
+ && echo -e \
+    "#\!/usr/bin/env bash\nexec mono ${VALE_HOME}/bin/vale.exe \"\${@}\"" \
+    > ${VALE_HOME}/bin/vale \
+ && chmod +x ${VALE_HOME}/bin/vale \
+ && rm -rf /home/devuser/tmp
 ENV PATH ${VALE_HOME}/bin:${PATH}
 ################################################################################
 # End Install Vale

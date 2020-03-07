@@ -13,7 +13,7 @@ export OCAML_VERSION=4.07.1
 export Z3_URL=https://github.com/sofia-rose/binaries/raw/master/z3-tested/z3-4.8.5-x64-debian-8.11.zip
 export FSTAR_SHA=2844d507fd99ab5675cf0dff8343040fed9d319a
 export KREMLIN_SHA=04054342cb527ecb97633d0d88a739ae0b320146
-export VALE_VERSION=v0.3.12
+export VALE_VERSION=0.3.12
 
 docker build \
   --build-arg OPAM_VERSION=${OPAM_VERSION} \
