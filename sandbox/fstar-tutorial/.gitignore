@@ -1,1 +1,3 @@
-/ocaml-extracted
+/*-extracted
+/*.hints
+/*.exe
