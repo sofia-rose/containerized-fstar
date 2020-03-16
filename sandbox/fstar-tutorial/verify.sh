@@ -4,4 +4,4 @@ set -eu
 
 FILE=$1
 
-fstar ${FILE}
+fstar "${FILE}"
