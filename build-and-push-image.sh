@@ -20,20 +20,16 @@ export VALE_VERSION=0.3.12
 export IMAGE_REPO="sofiarose/containerized-fstar"
 export IMAGE_TAG="${FSTAR_SHA}"
 
-docker pull "${IMAGE_REPO}:${IMAGE_TAG}"
+docker build \
+  --build-arg OPAM_VERSION=${OPAM_VERSION} \
+  --build-arg OCAML_VERSION=${OCAML_VERSION} \
+  --build-arg FSTAR_SHA=${FSTAR_SHA} \
+  --build-arg KREMLIN_SHA=${KREMLIN_SHA} \
+  --build-arg VALE_VERSION=${VALE_VERSION} \
+  --build-arg Z3_URL=${Z3_URL} \
+  --build-arg "USER_ID=${USER_ID}"  \
+  --build-arg "GROUP_ID=${GROUP_ID}" \
+  --tag "${IMAGE_REPO}:${IMAGE_TAG}" \
+  .
 
-docker run \
-  --interactive \
-  --tty \
-  --rm \
-  --env OPAM_VERSION=${OPAM_VERSION} \
-  --env OCAML_VERSION=${OCAML_VERSION} \
-  --env FSTAR_SHA=${FSTAR_SHA} \
-  --env KREMLIN_SHA=${KREMLIN_SHA} \
-  --env VALE_VERSION=${VALE_VERSION} \
-  --env Z3_URL=${Z3_URL} \
-  --env WORKSPACE=${CONTAINER_WORKSPACE} \
-  --volume "${HOST_WORKSPACE}:${CONTAINER_WORKSPACE}" \
-  --workdir "${CONTAINER_WORKSPACE}" \
-  "${IMAGE_REPO}:${IMAGE_TAG}" \
-  /bin/bash
+docker push "${IMAGE_REPO}:${IMAGE_TAG}"
